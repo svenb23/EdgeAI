@@ -5,3 +5,4 @@ onnxruntime
 skl2onnx
 matplotlib
 seaborn
+torch --index-url https://download.pytorch.org/whl/cpu
