@@ -16,8 +16,8 @@ import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 
 # Load data
-train = pd.read_csv("../../Data/processed/train.csv", index_col="datetime_utc", parse_dates=True)
-test = pd.read_csv("../../Data/processed/test.csv", index_col="datetime_utc", parse_dates=True)
+train = pd.read_csv("../../../Data/processed/train.csv", index_col="datetime_utc", parse_dates=True)
+test = pd.read_csv("../../../Data/processed/test.csv", index_col="datetime_utc", parse_dates=True)
 
 target = "target_pm25_1h"
 
@@ -29,7 +29,7 @@ drop_features = [
     "is_weekend", "is_rushhour",
 ]
 
-all_features = [c for c in train.columns if c != target]
+all_features = [c for c in train.columns if not c.startswith("target_")]
 reduced_features = [c for c in all_features if c not in drop_features]
 
 print(f"Features: {len(all_features)} -> {len(reduced_features)}")

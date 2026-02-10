@@ -14,11 +14,11 @@ import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 
 # Load data
-train = pd.read_csv("../../Data/processed/train.csv", index_col="datetime_utc", parse_dates=True)
-test = pd.read_csv("../../Data/processed/test.csv", index_col="datetime_utc", parse_dates=True)
+train = pd.read_csv("../../../Data/processed/train.csv", index_col="datetime_utc", parse_dates=True)
+test = pd.read_csv("../../../Data/processed/test.csv", index_col="datetime_utc", parse_dates=True)
 
 target = "target_pm25_1h"
-features = [c for c in train.columns if c != target]
+features = [c for c in train.columns if not c.startswith("target_")]
 
 # Scale features
 scaler = StandardScaler()
@@ -94,6 +94,6 @@ print(f"  RMSE: {root_mean_squared_error(y_test_seq, y_pred):.3f}")
 print(f"  R2:   {r2_score(y_test_seq, y_pred):.3f}")
 
 # Save model and scaler
-torch.save(model.state_dict(), "../../Data/models/gru_model.pt")
-with open("../../Data/models/gru_scaler.pkl", "wb") as f:
+torch.save(model.state_dict(), "../../../Data/models/pm25/gru_model.pt")
+with open("../../../Data/models/pm25/gru_scaler.pkl", "wb") as f:
     pickle.dump(scaler, f)
