@@ -299,7 +299,12 @@ Die klassischen Modelle werden als Pickle-Dateien gespeichert, das \ac{GRU}-Mode
 PyTorch-State-Dict zusammen mit dem zugehörigen Scaler.
 
 \subsubsection{NO2-Modelle}
-% TODO: Linear Regression, Random Forest, Gradient Boosting, GRU
+Für die Vorhersage der NO2-Konzentration werden dieselben vier Modellarchitekturen mit
+identischen Hyperparametern trainiert. Das Eingabe-Feature-Set bleibt unverändert bei
+28~Merkmalen, lediglich die Zielvariable wechselt von \texttt{target\_pm25\_1h} zu
+\texttt{target\_no2\_1h}. Diese einheitliche Konfiguration ermöglicht einen direkten
+Vergleich der Modellleistung zwischen beiden Schadstoffen und zeigt, wie gut die
+PM2.5-orientierten Lag- und Rolling-Features auch für die NO2-Vorhersage geeignet sind.
 
 \subsection{Feature Importance und Feature-Reduktion}
 % TODO: Korrelation, MDI, Permutation Importance, Reduktion 28 -> 17 Features
