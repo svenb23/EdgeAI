@@ -269,7 +269,34 @@ Zeile des Datensatzes, für die kein Zielwert existiert, wird entfernt. Als Eing
 dienen alle 28~Features aus der Vorverarbeitung.
 
 \subsubsection{PM2.5-Modelle}
-% TODO: Linear Regression, Random Forest, Gradient Boosting, GRU
+Für die Vorhersage der PM2.5-Konzentration werden vier Modelltypen trainiert, die sich in
+Komplexität und Modellierungsansatz unterscheiden.
+
+Die lineare Regression dient als Baseline-Modell. Sie wird ohne weitere
+Hyperparameter mit den Standardeinstellungen von scikit-learn trainiert und liefert einen
+ersten Referenzwert für die erreichbare Vorhersagegenauigkeit.
+
+Das Random-Forest-Modell verwendet 100~Entscheidungsbäume mit einer maximalen
+Tiefe von~15. Durch die Begrenzung der Baumtiefe wird Overfitting reduziert, während die
+Ensemble-Methode dennoch nichtlineare Zusammenhänge erfassen kann. Die Berechnung erfolgt
+parallelisiert über alle verfügbaren CPU-Kerne.
+
+Das Gradient-Boosting-Modell baut sequenziell 200~Bäume mit einer maximalen
+Tiefe von~5 und einer Lernrate von~0,1 auf. Die geringere Baumtiefe im Vergleich zum
+Random Forest kompensiert das Boosting-Verfahren durch die höhere Anzahl an Iterationen.
+Die Lernrate steuert den Beitrag jedes einzelnen Baumes zum Gesamtmodell.
+
+Das \ac{GRU}-Netzwerk ist das einzige sequenzielle Modell im Vergleich. Es verarbeitet
+Eingabesequenzen von sechs aufeinanderfolgenden Stunden, um die Konzentration der siebten
+Stunde vorherzusagen. Die Architektur besteht aus einer \ac{GRU}-Schicht mit 32~Hidden Units,
+gefolgt von einer linearen Ausgabeschicht. Vor dem Training werden alle Features mit einem
+StandardScaler normalisiert. Das Modell wird über 30~Epochen mit dem Adam-Optimizer
+(Lernrate~0,001) und einer Batch-Größe von~64 trainiert. Als Verlustfunktion wird der
+Mean Squared Error verwendet.
+
+Alle vier Modelle werden auf dem Testsatz anhand von \ac{MAE}, \ac{RMSE} und $R^2$ evaluiert.
+Die klassischen Modelle werden als Pickle-Dateien gespeichert, das \ac{GRU}-Modell als
+PyTorch-State-Dict zusammen mit dem zugehörigen Scaler.
 
 \subsubsection{NO2-Modelle}
 % TODO: Linear Regression, Random Forest, Gradient Boosting, GRU
