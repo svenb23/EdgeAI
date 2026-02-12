@@ -221,7 +221,36 @@ mit den Spalten \texttt{parameter}, \texttt{value}, \texttt{datetime\_utc} und
 \texttt{datetime\_local}.
 
 \subsection{Datenvorverarbeitung}
-% TODO: Reshape, Time Features, Lag Features, Rolling Features, Cross-Pollutant Features
+Die Vorverarbeitung erfolgt in fünf aufeinander aufbauenden Schritten, die jeweils das Ergebnis
+des vorherigen Schritts einlesen und um neue Merkmale ergänzen.
+
+Im ersten Schritt wird das Rohdatenfile vom Long-Format (eine Zeile pro Messung) in ein
+Wide-Format (eine Zeile pro Stunde, eine Spalte pro Schadstoff) überführt. Fehlende Werte
+werden linear interpoliert, wobei Lücken von maximal sechs Stunden geschlossen werden.
+Verbleibende Lücken werden entfernt.
+
+Der zweite Schritt erzeugt zwölf zeitbasierte Merkmale. Neben den Rohwerten für Stunde,
+Wochentag und Monat werden binäre Indikatoren für Wochenende und Berufsverkehr (7--9 und
+16--18~Uhr) erstellt. Zusätzlich werden Stunde, Monat und Wochentag zyklisch als Sinus-
+und Kosinuswerte kodiert, um die Periodizität für die Modelle abzubilden.
+
+Im dritten Schritt werden sechs Lag-Features erzeugt, die die Schadstoffwerte der
+vorangegangenen Stunden als Prädiktoren bereitstellen. Für PM2.5 werden drei Lags
+(1h, 2h, 3h) erstellt, für NO2, CO und PM10 jeweils ein Lag von einer Stunde.
+
+Der vierte Schritt berechnet gleitende Statistiken über verschiedene Zeitfenster. Für
+PM2.5 werden die rollierenden Mittelwerte über 3, 6 und 24~Stunden sowie die rollierende
+Standardabweichung über 3~Stunden berechnet. Diese vier Features erfassen lokale Trends
+und die kurzfristige Variabilität der Feinstaubkonzentration.
+
+Im fünften Schritt werden drei schadstoffübergreifende Merkmale ergänzt: das Verhältnis
+PM2.5/PM10 als Indikator für den Anteil von Verbrennungspartikeln am Gesamtfeinstaub sowie
+die stündliche und dreistündliche Änderungsrate von PM2.5 ($\Delta$1h, $\Delta$3h).
+
+Nach Abschluss aller fünf Schritte umfasst der Datensatz die vier Rohwerte sowie 25
+engineerte Merkmale, insgesamt also 29~Spalten. Durch die Lag- und Rolling-Berechnungen
+gehen die ersten 23~Datenpunkte verloren, sodass der finale Datensatz rund 7\,850 stündliche
+Beobachtungen enthält.
 
 \subsection{Modelltraining}
 \subsubsection{Train/Test-Split}
