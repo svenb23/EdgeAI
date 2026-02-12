@@ -132,7 +132,11 @@
 \section*{Abkürzungsverzeichnis}
 \addcontentsline{toc}{section}{Abkürzungsverzeichnis}
 \begin{acronym}[ONNX]
-
+    \acro{GRU}{Gated Recurrent Unit}
+    \acro{MAE}{Mean Absolute Error}
+    \acro{ONNX}{Open Neural Network Exchange}
+    \acro{RMSE}{Root Mean Squared Error}
+    \acro{WHO}{World Health Organization}
 \end{acronym}
 \newpage
 
@@ -140,7 +144,41 @@
 \setcounter{page}{1}
 
 \section{Einleitung}
-% TODO: Einleitung schreiben
+Die Luftqualität in städtischen Gebieten stellt ein wachsendes Gesundheitsrisiko dar. Insbesondere
+Feinstaub (PM2.5) und Stickstoffdioxid (NO2) werden mit Atemwegserkrankungen, Herz-Kreislauf-Beschwerden
+und einer erhöhten Mortalität in Verbindung gebracht \parencite{who2016airpollution, lelieveld2021luftverschmutzung}. Besonders gefährdet sind vulnerable Gruppen wie
+Kinder, ältere Menschen und Personen mit Vorerkrankungen \parencite{eea2023children}. An stark befahrenen Straßen in der Nähe von
+Schulen und Wohngebieten können die Schadstoffkonzentrationen kurzfristig kritische Werte erreichen,
+ohne dass rechtzeitig Gegenmaßnahmen eingeleitet werden.
+
+Klassische Umweltüberwachungssysteme erfassen zwar kontinuierlich Messdaten, leiten daraus jedoch keine
+unmittelbaren Handlungsempfehlungen ab. Die Daten werden zentral gesammelt und erst mit Verzögerung
+ausgewertet. Für zeitkritische Anwendungen wie die dynamische Verkehrssteuerung bei Schadstoffspitzen
+ist dieser Ansatz unzureichend. Edge AI bietet hier einen vielversprechenden Lösungsansatz: Durch die
+lokale Ausführung von Vorhersagemodellen direkt an der Messstation können Prognosen in Echtzeit erstellt
+und Maßnahmen ohne Umweg über zentrale Server ausgelöst werden.
+
+Vor diesem Hintergrund wurde im Rahmen des Moduls \enquote{Projekt: Edge AI} an der IU Internationalen
+Hochschule ein System entwickelt, das die Luftqualität an der Messstation Hamburg Habichtstraße
+vorhersagt. Die Station befindet sich an einer stark befahrenen Straße in unmittelbarer Nähe einer
+Schule und eignet sich daher besonders als Anwendungsfall. Das System prognostiziert sowohl die
+PM2.5- als auch die NO2-Konzentration eine Stunde im Voraus und leitet daraus ein dreistufiges
+Ampelsystem ab, das bei erhöhter Belastung automatisch Verkehrsmaßnahmen wie Geschwindigkeitsbegrenzungen
+oder Umleitungen auslösen kann.
+
+Die methodische Vorgehensweise umfasst mehrere aufeinander aufbauende Schritte. Zunächst werden
+stündliche Messdaten der OpenAQ-Plattform vorverarbeitet und durch Feature Engineering angereichert.
+Anschließend werden vier Modelltypen, lineare Regression, Random Forest, Gradient Boosting und
+\ac{GRU}, trainiert und verglichen. Durch eine systematische Feature-Importance-Analyse wird das
+Feature-Set von 28 auf 17 Merkmale reduziert. Die besten Modelle werden in das \ac{ONNX}-Format
+exportiert und hinsichtlich Inferenzzeit und Modellgröße für den Edge-Einsatz evaluiert. Abschließend
+wird eine Edge-Inference-Pipeline implementiert, die den gesamten Ablauf von der Sensorablesung
+bis zur Ampelentscheidung abbildet.
+
+Das vorliegende Projekt gliedert sich wie folgt: Nach der Beschreibung der Projektumgebung und
+der Datengrundlage werden die Vorverarbeitung und das Modelltraining erläutert. Anschließend werden
+die Edge-Optimierung, das Alert-System und die Inference-Pipeline vorgestellt. Abschließend werden
+die Ergebnisse kritisch reflektiert und Verbesserungspotenziale aufgezeigt.
 
 \section{Hauptteil}
 \subsection{Projektumgebung}
