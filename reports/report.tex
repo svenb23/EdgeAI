@@ -182,7 +182,18 @@ die Ergebnisse kritisch reflektiert und Verbesserungspotenziale aufgezeigt.
 
 \section{Hauptteil}
 \subsection{Projektumgebung}
-% TODO: GitHub-Repository, Python, venv, Abhängigkeiten
+Zu Beginn des Projekts wurde ein GitHub-Repository\footnote{\url{https://github.com/svenb23/EdgeAI}}
+angelegt, um eine nachvollziehbare Versionsverwaltung zu gewährleisten. Als Implementierungssprache
+wurde Python gewählt. Für die Reproduzierbarkeit wurde eine virtuelle Umgebung mit \texttt{venv}
+eingerichtet, in der alle Abhängigkeiten über eine \texttt{requirements.txt} installiert werden.
+Zu den zentralen Bibliotheken zählen \texttt{pandas} und \texttt{numpy} für die Datenverarbeitung,
+\texttt{scikit-learn} für die klassischen Machine-Learning-Modelle, \texttt{torch} (CPU-Version)
+sowie \texttt{onnxruntime} und \texttt{skl2onnx} für den \ac{ONNX}-Export und die Edge-Inferenz.
+
+Die gesamte Pipeline, von den Rohdaten bis zur Edge-Inference-Demo, lässt sich mit einem
+einzigen Befehl (\texttt{python run\_all.py}) ausführen. Das Skript ruft alle Verarbeitungsschritte
+sequenziell auf und stellt sicher, dass jedes Teilskript im korrekten Arbeitsverzeichnis
+ausgeführt wird. Dadurch kann ein Tutor die Ergebnisse ohne manuelle Konfiguration reproduzieren.
 
 \subsection{Datengrundlage}
 % TODO: OpenAQ, Station Hamburg Habichtstraße, Schadstoffe (PM2.5, PM10, NO2, CO), Zeitraum 2025
