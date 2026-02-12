@@ -254,7 +254,19 @@ Beobachtungen enthält.
 
 \subsection{Modelltraining}
 \subsubsection{Train/Test-Split}
-% TODO: Chronologischer 80/20-Split, 1h-Ahead Targets
+Für die Aufteilung des Datensatzes wird ein chronologischer 80/20-Split verwendet. Im Gegensatz
+zu einem zufälligen Split bewahrt diese Strategie die zeitliche Reihenfolge der Messdaten und
+verhindert Data Leakage, da das Modell ausschließlich auf vergangenen Daten trainiert und auf
+zukünftigen Daten evaluiert wird. Die ersten 80\,\% der Beobachtungen (ca. 6\,280 Stunden)
+bilden den Trainingssatz, die letzten 20\,\% (ca. 1\,570 Stunden) den Testsatz.
+
+Als Zielvariablen werden die PM2.5- und die NO2-Konzentration jeweils eine Stunde in die
+Zukunft verschoben. Der Wert von \texttt{target\_pm25\_1h} zum Zeitpunkt $t$ entspricht somit
+dem tatsächlichen PM2.5-Wert zum Zeitpunkt $t+1$. Analog wird \texttt{target\_no2\_1h}
+gebildet. Durch diese Verschiebung lernen die Modelle, aus den aktuellen Messwerten und den
+engineerten Merkmalen die Schadstoffbelastung der nächsten Stunde vorherzusagen. Die letzte
+Zeile des Datensatzes, für die kein Zielwert existiert, wird entfernt. Als Eingabemerkmale
+dienen alle 28~Features aus der Vorverarbeitung.
 
 \subsubsection{PM2.5-Modelle}
 % TODO: Linear Regression, Random Forest, Gradient Boosting, GRU
