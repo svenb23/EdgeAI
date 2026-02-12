@@ -196,7 +196,29 @@ sequenziell auf und stellt sicher, dass jedes Teilskript im korrekten Arbeitsver
 ausgeführt wird. Dadurch kann ein Tutor die Ergebnisse ohne manuelle Konfiguration reproduzieren.
 
 \subsection{Datengrundlage}
-% TODO: OpenAQ, Station Hamburg Habichtstraße, Schadstoffe (PM2.5, PM10, NO2, CO), Zeitraum 2025
+Für das Training und die Evaluation der Modelle werden reale Luftqualitätsdaten benötigt.
+Im Vorfeld wurden drei Datenquellen evaluiert: das UCI Air Quality Dataset
+\parencite{devito2016uci} (globale Stadte), das Umweltbundesamt
+\parencite{uba2025luft} (zuverlässig, aber manueller Download) und die OpenAQ-Plattform
+\parencite{openaq2025} (globale API mit deutschen Stationen). Die Wahl fiel auf OpenAQ, da die
+Plattform einen automatisierten API-Zugang bietet und die Aufgabenstellung diese Quelle
+explizit als Beispiel nennt.
+
+Als Messstation wurde zunächst Hamburg Max-Brauer-Allee~II (Straßenstation) in Betracht
+gezogen. Eine Datenanalyse ergab jedoch, dass für PM2.5 lediglich 486 Datenpunkte aus dem
+Dezember 2025 vorlagen, während PM10, NO2 und CO über alle zwölf Monate hinweg knapp 8\,000
+Messpunkte aufwiesen. Da ein vollständiges Jahr für die Abbildung saisonaler Muster notwendig
+ist, wurde stattdessen die Station Hamburg Habichtstraße (OpenAQ Location~ID~3010) gewählt.
+Diese Straßenstation befindet sich in unmittelbarer Nähe einer Schule und liefert für alle
+vier Parameter, PM2.5, PM10, NO2 und CO, jeweils rund 7\,900 stündliche Messwerte
+über das gesamte Jahr 2025.
+
+Der Datenabruf erfolgt über ein Python-Skript (\texttt{download\_openaq.py}), das die
+OpenAQ~v3-API monatsweise abfragt und die Ergebnisse als CSV im Long-Format speichert.
+Die monatsweise Paginierung ist notwendig, um die API-Limits von 1\,000 Datensätzen pro
+Anfrage einzuhalten. Das resultierende Rohdatenfile enthält rund 31\,500 Messungen
+mit den Spalten \texttt{parameter}, \texttt{value}, \texttt{datetime\_utc} und
+\texttt{datetime\_local}.
 
 \subsection{Datenvorverarbeitung}
 % TODO: Reshape, Time Features, Lag Features, Rolling Features, Cross-Pollutant Features
