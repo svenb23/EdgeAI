@@ -369,7 +369,21 @@ gesamten Testsatz (ca. 1\,570 Datenpunkte) unter 0,1~ms. Diese Werte liegen weit
 Anforderungen einer stündlichen Vorhersage und belegen die Echtzeitfähigkeit des Systems.
 
 \subsection{Alert-System}
-% TODO: WHO-Grenzwerte, Eskalationsstufen (Gruen/Gelb/Rot), kombinierte PM2.5 + NO2 Bewertung
+Aus den Vorhersagen beider Schadstoffe wird ein dreistufiges Ampelsystem abgeleitet, das
+als Entscheidungsgrundlage für Verkehrsmaßnahmen dient. Die Schwellenwerte orientieren sich
+an den Richtwerten der \ac{WHO}: Für PM2.5 liegt der 24-Stunden-Richtwert bei
+15\,\textmu g/m\textsuperscript{3}, für NO2 der 24-Stunden-Richtwert bei
+25\,\textmu g/m\textsuperscript{3} \parencite{who2021aqg}.
+
+Die drei Eskalationsstufen sind wie folgt definiert: Grün (PM2.5~$<$~15 und NO2~$<$~40)
+bedeutet Normalbetrieb ohne Einschränkungen. Gelb (PM2.5 zwischen 15 und 25 oder NO2
+zwischen 40 und 80) löst eine Geschwindigkeitsbegrenzung auf 30\,km/h aus. Rot
+(PM2.5~$>$~25 oder NO2~$>$~80) führt zu einer Umleitung des Verkehrs. Die Bewertung
+erfolgt nach dem Worst-Case-Prinzip: Sobald einer der beiden Schadstoffe eine höhere
+Stufe erreicht, wird die gesamte Bewertung auf diese Stufe angehoben.
+
+Dieses kombinierte System stellt sicher, dass auch dann Maßnahmen ergriffen werden, wenn
+nur ein Schadstoff erhöhte Werte aufweist, während der andere unauffällig bleibt.
 
 \subsection{Edge-Inference-Pipeline}
 % TODO: EdgeInference-Klasse, 24h-Buffer, Feature-Berechnung, ONNX-Praediktion, Ampelsteuerung
