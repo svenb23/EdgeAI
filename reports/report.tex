@@ -334,8 +334,19 @@ Die Reduktion von 28 auf 17~Features (39\,\% Reduktion) entfernt ausschließlich
 zeitbasierten Merkmale. Das reduzierte Set umfasst die vier Rohwerte (PM2.5, PM10, NO2, CO),
 sechs Lag-Features, vier Rolling-Statistiken sowie drei schadstoffübergreifende Merkmale.
 Anschließend werden alle vier Modelle für beide Schadstoffe mit dem reduzierten Feature-Set
-neu trainiert und mit den Baseline-Ergebnissen (28~Features) verglichen, um sicherzustellen,
-dass die Reduktion keine wesentliche Verschlechterung der Vorhersagequalität verursacht.
+neu trainiert und mit den Baseline-Ergebnissen (28~Features) verglichen
+(siehe \cref{tab:reduced_pm25,tab:reduced_no2} im Anhang).
+
+Für PM2.5 zeigt der Vergleich, dass die Feature-Reduktion die Vorhersagequalität nicht
+verschlechtert. Die lineare Regression verbessert sich sogar leicht (MAE~0,914 statt~0,929),
+und auch das \ac{GRU}-Netzwerk profitiert deutlich von der Reduktion (MAE~1,544 statt~1,743).
+Dies deutet darauf hin, dass die entfernten zeitbasierten Features für PM2.5 eher Rauschen
+als Information beigetragen haben.
+
+Für NO2 zeigt sich hingegen eine leichte Verschlechterung, da die tageszeitlichen
+Features hier relevanter sind. Der MAE der linearen Regression steigt von~4,019 auf~4,199,
+der des Random Forest von~3,903 auf~4,223. Die Einbußen bleiben jedoch moderat und
+rechtfertigen den Vorteil eines einheitlichen, schlankeren Feature-Sets für den Edge-Einsatz.
 
 \subsection{Edge-Optimierung}
 \subsubsection{ONNX-Export}
@@ -425,6 +436,44 @@ Rang & Feature & Korr. & RF MDI & GB MDI & Perm. & {\O} Rang \\
 GB MDI = Gradient Boosting MDI, Perm. = Permutation Importance.
 Die oberen 17~Features (über dem Strich) bilden das reduzierte Feature-Set.
 \end{tablenotes}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Modellvergleich PM2.5: Baseline (28~Features) vs. reduziertes Set (17~Features)}
+\label{tab:reduced_pm25}
+\small
+\begin{tabular}{@{}l rr r rr r rr r@{}}
+\toprule
+ & \multicolumn{3}{c}{MAE} & \multicolumn{3}{c}{RMSE} & \multicolumn{3}{c}{$R^2$} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+Modell & 28 & 17 & Diff. & 28 & 17 & Diff. & 28 & 17 & Diff. \\
+\midrule
+Linear Regression  & 0,929 & 0,914 & $-$0,015 & 1,537 & 1,529 & $-$0,008 & 0,930 & 0,931 & $+$0,001 \\
+Random Forest      & 0,981 & 0,977 & $-$0,004 & 1,578 & 1,581 & $+$0,003 & 0,926 & 0,926 & $\pm$0,000 \\
+Gradient Boosting  & 0,990 & 0,975 & $-$0,015 & 1,579 & 1,634 & $+$0,055 & 0,926 & 0,921 & $-$0,005 \\
+GRU                & 1,743 & 1,544 & $-$0,199 & 2,493 & 2,302 & $-$0,191 & 0,817 & 0,844 & $+$0,027 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Modellvergleich NO2: Baseline (28~Features) vs. reduziertes Set (17~Features)}
+\label{tab:reduced_no2}
+\small
+\begin{tabular}{@{}l rr r rr r rr r@{}}
+\toprule
+ & \multicolumn{3}{c}{MAE} & \multicolumn{3}{c}{RMSE} & \multicolumn{3}{c}{$R^2$} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+Modell & 28 & 17 & Diff. & 28 & 17 & Diff. & 28 & 17 & Diff. \\
+\midrule
+Linear Regression  & 4,019 & 4,199 & $+$0,180 & 5,394 & 5,604 & $+$0,210 & 0,880 & 0,871 & $-$0,009 \\
+Random Forest      & 3,903 & 4,223 & $+$0,320 & 5,200 & 5,648 & $+$0,448 & 0,889 & 0,869 & $-$0,020 \\
+Gradient Boosting  & 4,015 & 4,285 & $+$0,270 & 5,368 & 5,757 & $+$0,389 & 0,881 & 0,864 & $-$0,018 \\
+GRU                & 5,989 & 6,756 & $+$0,767 & 7,824 & 8,819 & $+$0,995 & 0,749 & 0,681 & $-$0,068 \\
+\bottomrule
+\end{tabular}
 \end{table}
 
 \end{document}
