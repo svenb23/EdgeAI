@@ -443,7 +443,20 @@ Praxis müssten die Schwellenwerte in Abstimmung mit den zuständigen Behörden 
 und validiert werden.
 
 \subsection{Verbesserungspotenziale}
-% TODO
+Mehrere Ansätze könnten die Vorhersagequalität und den praktischen Nutzen des Systems
+verbessern. Die Integration externer Datenquellen wie Wetterdaten (Windgeschwindigkeit,
+Temperatur, Niederschlag) oder Verkehrszähldaten würde den Modellen zusätzliche
+Erklärungsvariablen liefern, die den Schadstoffausstoß direkt beeinflussen.
+
+Auf Modellseite könnte eine systematische Hyperparameter-Optimierung mittels Grid Search
+oder Bayesian Optimization die Ergebnisse der baumbasierten Modelle und des \ac{GRU}-Netzwerks
+verbessern. Auch die Erprobung weiterer Architekturen wie LSTM oder Transformer-basierter
+Zeitreihenmodelle wäre denkbar.
+
+Für den Edge-Einsatz könnte eine Quantisierung der \ac{ONNX}-Modelle (z.\,B. INT8) die
+Inferenzzeit und den Speicherbedarf weiter reduzieren. Zudem wäre eine Validierung auf
+realer Edge-Hardware wie einem Raspberry Pi oder einem Mikrocontroller sinnvoll, um die
+Praxistauglichkeit unter realen Bedingungen zu bestätigen.
 
 \subsection{Ausblick}
 % TODO
