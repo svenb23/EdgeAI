@@ -235,7 +235,7 @@ Wide-Format (eine Zeile pro Stunde, eine Spalte pro Schadstoff) überführt. Feh
 werden linear interpoliert, wobei Lücken von maximal sechs Stunden geschlossen werden.
 Verbleibende Lücken werden entfernt.
 
-Der zweite Schritt erzeugt zwölf zeitbasierte Merkmale. Neben den Rohwerten für Stunde,
+Der zweite Schritt erzeugt elf zeitbasierte Merkmale. Neben den Rohwerten für Stunde,
 Wochentag und Monat werden binäre Indikatoren für Wochenende und Berufsverkehr (7--9 und
 16--18~Uhr) erstellt. Zusätzlich werden Stunde, Monat und Wochentag zyklisch als Sinus-
 und Kosinuswerte kodiert, um die Periodizität für die Modelle abzubilden.
@@ -253,18 +253,18 @@ Im fünften Schritt werden drei schadstoffübergreifende Merkmale ergänzt: das 
 PM2.5/PM10 als Indikator für den Anteil von Verbrennungspartikeln am Gesamtfeinstaub sowie
 die stündliche und dreistündliche Änderungsrate von PM2.5 ($\Delta$1h, $\Delta$3h).
 
-Nach Abschluss aller fünf Schritte umfasst der Datensatz die vier Rohwerte sowie 25
-engineerte Merkmale, insgesamt also 29~Spalten. Durch die Lag- und Rolling-Berechnungen
-gehen die ersten 23~Datenpunkte verloren, sodass der finale Datensatz rund 7\,850 stündliche
-Beobachtungen enthält.
+Nach Abschluss aller fünf Schritte umfasst der Datensatz die vier Rohwerte sowie 24
+engineerte Merkmale, insgesamt also 28~Spalten. Durch die Lag-, Rolling- und
+Differenzberechnungen gehen die ersten 29~Datenpunkte verloren, sodass der finale
+Datensatz rund 8\,520 stündliche Beobachtungen enthält.
 
 \subsection{Modelltraining}
 \subsubsection{Train/Test-Split}
 Für die Aufteilung des Datensatzes wird ein chronologischer 80/20-Split verwendet. Im Gegensatz
 zu einem zufälligen Split bewahrt diese Strategie die zeitliche Reihenfolge der Messdaten und
 verhindert Data Leakage, da das Modell ausschließlich auf vergangenen Daten trainiert und auf
-zukünftigen Daten evaluiert wird. Die ersten 80\,\% der Beobachtungen (ca. 6\,280 Stunden)
-bilden den Trainingssatz, die letzten 20\,\% (ca. 1\,570 Stunden) den Testsatz.
+zukünftigen Daten evaluiert wird. Die ersten 80\,\% der Beobachtungen (ca. 6\,820 Stunden)
+bilden den Trainingssatz, die letzten 20\,\% (ca. 1\,700 Stunden) den Testsatz.
 
 Als Zielvariablen werden die PM2.5- und die NO2-Konzentration jeweils eine Stunde in die
 Zukunft verschoben. Der Wert von \texttt{target\_pm25\_1h} zum Zeitpunkt $t$ entspricht somit
@@ -371,7 +371,7 @@ Die exportierten \ac{ONNX}-Modelle werden hinsichtlich Modellgröße und Inferen
 Beide Modelle belegen jeweils nur 0,3~KB Speicherplatz, was selbst für stark
 speicherbeschränkte Mikrocontroller geeignet ist. Die Inferenzzeit wird über 100~Durchläufe
 gemittelt. Eine einzelne Vorhersage benötigt unter 0,02~ms, eine Batch-Inferenz über den
-gesamten Testsatz (ca. 1\,570 Datenpunkte) unter 0,1~ms. Diese Werte liegen weit unter den
+gesamten Testsatz (ca. 1\,700 Datenpunkte) unter 0,1~ms. Diese Werte liegen weit unter den
 Anforderungen einer stündlichen Vorhersage und belegen die Echtzeitfähigkeit des Systems.
 
 \subsection{Alert-System}
