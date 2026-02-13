@@ -411,7 +411,19 @@ der Alarmstufen sowie die letzten Übergänge zwischen den Stufen.
 
 \section{Fazit}
 \subsection{Zielerreichung und Projektergebnisse}
-% TODO
+Das Ziel des Projekts war die Entwicklung eines Edge-AI-Systems zur Vorhersage der
+Luftqualität, das bei erhöhter Schadstoffbelastung automatisch Verkehrsmaßnahmen auslösen
+kann. Dieses Ziel wurde erreicht. Die vollständige Pipeline umfasst den Datenabruf über
+die OpenAQ-API, die Vorverarbeitung mit Feature Engineering, das Training und den Vergleich
+von vier Modelltypen für beide Zielvariablen, die Feature-Reduktion von 28 auf 17~Merkmale,
+den \ac{ONNX}-Export sowie ein kombiniertes Ampelsystem mit Edge-Inference-Demo.
+
+Die lineare Regression erzielte für PM2.5 einen \ac{MAE} von 0,914\,\textmu g/m\textsuperscript{3}
+und ein $R^2$ von 0,931, für NO2 einen \ac{MAE} von 4,199\,\textmu g/m\textsuperscript{3}
+und ein $R^2$ von 0,871. Trotz ihrer Einfachheit übertrifft sie die komplexeren Modelle
+und wurde daher als Edge-Modell gewählt. Die exportierten \ac{ONNX}-Modelle belegen jeweils
+nur 0,3~KB und benötigen unter 0,02~ms pro Vorhersage, womit sie für den Einsatz auf
+ressourcenbeschränkten Geräten geeignet sind.
 
 \subsection{Kritische Reflexion}
 % TODO
@@ -420,6 +432,7 @@ der Alarmstufen sowie die letzten Übergänge zwischen den Stufen.
 % TODO
 
 \subsection{Ausblick}
+% TODO
 
 \section*{Projektrepository}
 \addcontentsline{toc}{section}{Projektrepository}
