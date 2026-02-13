@@ -386,7 +386,28 @@ Dieses kombinierte System stellt sicher, dass auch dann Maßnahmen ergriffen wer
 nur ein Schadstoff erhöhte Werte aufweist, während der andere unauffällig bleibt.
 
 \subsection{Edge-Inference-Pipeline}
-% TODO: EdgeInference-Klasse, 24h-Buffer, Feature-Berechnung, ONNX-Praediktion, Ampelsteuerung
+Die Edge-Inference-Pipeline bildet den gesamten Ablauf von der Sensorablesung bis zur
+Ampelentscheidung ab und simuliert damit den Betrieb auf einem Edge-Gerät. Die zentrale
+Komponente ist die Klasse \texttt{EdgeInference}, die beide \ac{ONNX}-Modelle (PM2.5 und
+NO2) lädt und über die Methode \texttt{add\_reading} neue Messwerte entgegennimmt.
+
+Intern verwaltet die Klasse einen Ringpuffer von 24~Stunden, der für die Berechnung des
+längsten Rolling-Features (pm25\_roll\_mean\_24h) benötigt wird. Erst wenn der Puffer
+vollständig gefüllt ist, werden Vorhersagen erzeugt. Bei jedem neuen Messwert berechnet
+die Methode \texttt{\_compute\_features} die 17~reduzierten Features direkt aus dem Puffer:
+aktuelle Rohwerte, Lag-Features aus den vorherigen Einträgen, Rolling-Mittelwerte und
+Standardabweichungen über die letzten 3, 6 bzw. 24~Werte sowie das PM2.5/PM10-Verhältnis
+und die Änderungsraten.
+
+Der resultierende Feature-Vektor wird an beide \ac{ONNX}-Sessions übergeben, die jeweils
+die Konzentration eine Stunde im Voraus prognostizieren. Aus den beiden Vorhersagen leitet
+die Methode \texttt{\_classify} nach dem im vorherigen Abschnitt beschriebenen
+Worst-Case-Prinzip die Ampelstufe ab. Das Ergebnis enthält die vorhergesagten Werte für
+PM2.5 und NO2 sowie die zugehörige Alarmstufe (Grün, Gelb oder Rot).
+
+In der Demo-Ausführung wird die Pipeline mit den realen Testdaten gespeist, indem jede
+Stunde sequenziell als Sensormessung übergeben wird. Die Ausgabe zeigt die Verteilung
+der Alarmstufen sowie die letzten Übergänge zwischen den Stufen.
 
 \section{Fazit}
 \subsection{Zielerreichung und Projektergebnisse}
