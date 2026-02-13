@@ -195,6 +195,12 @@ einzigen Befehl (\texttt{python run\_all.py}) ausführen. Das Skript ruft alle V
 sequenziell auf und stellt sicher, dass jedes Teilskript im korrekten Arbeitsverzeichnis
 ausgeführt wird. Dadurch kann ein Tutor die Ergebnisse ohne manuelle Konfiguration reproduzieren.
 
+Als Ziel-Edge-Hardware wird ein Einplatinencomputer wie der Raspberry Pi~4 (1,5~GHz
+ARM Cortex-A72, 2--4~GB RAM) angenommen. Die Sensordaten werden stündlich als
+vier Messwerte (PM2.5, PM10, NO2, CO) bereitgestellt. Die Anforderungen an das
+Edge-Modell ergeben sich daraus: geringe Modellgröße (wenige KB), kurze Inferenzzeit
+(unter 100~ms) und keine Abhängigkeit von einer Internetverbindung für die Vorhersage.
+
 \subsection{Datengrundlage}
 Für das Training und die Evaluation der Modelle werden reale Luftqualitätsdaten benötigt.
 Im Vorfeld wurden drei Datenquellen evaluiert: das UCI Air Quality Dataset
@@ -441,6 +447,16 @@ Die Schwellenwerte des Ampelsystems wurden an den WHO-Richtwerten orientiert, je
 nicht empirisch auf die lokalen Gegebenheiten an der Habichtstraße kalibriert. In der
 Praxis müssten die Schwellenwerte in Abstimmung mit den zuständigen Behörden festgelegt
 und validiert werden.
+
+Eine weitere Herausforderung im produktiven Edge-Betrieb ist Data Drift: Die
+Schadstoffverteilungen können sich durch Veränderungen im Verkehrsaufkommen, Baustellen
+oder saisonale Effekte über die Zeit verschieben. Das Modell wurde auf Daten eines
+einzelnen Jahres trainiert und könnte bei veränderten Bedingungen an Vorhersagequalität
+verlieren. Ein regelmäßiges Monitoring der Vorhersagefehler und ein Mechanismus zum
+Nachtrainieren wären im Dauerbetrieb notwendig. Zudem gelten für Edge-Geräte
+spezifische Restriktionen wie begrenzter Speicher, eingeschränkte Stromversorgung und
+fehlende permanente Internetverbindung, die bei einem Deployment berücksichtigt werden
+müssen.
 
 \subsection{Verbesserungspotenziale}
 Mehrere Ansätze könnten die Vorhersagequalität und den praktischen Nutzen des Systems
