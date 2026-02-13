@@ -121,10 +121,6 @@
 \tableofcontents
 \newpage
 
-\listoffigures
-\addcontentsline{toc}{section}{Abbildungsverzeichnis}
-\newpage
-
 \listoftables
 \addcontentsline{toc}{section}{Tabellenverzeichnis}
 \newpage
@@ -204,7 +200,7 @@ Edge-Modell ergeben sich daraus: geringe Modellgröße (wenige KB), kurze Infere
 \subsection{Datengrundlage}
 Für das Training und die Evaluation der Modelle werden reale Luftqualitätsdaten benötigt.
 Im Vorfeld wurden drei Datenquellen evaluiert: das UCI Air Quality Dataset
-\parencite{devito2016uci} (globale Stadte), das Umweltbundesamt
+\parencite{devito2016uci} (globale Städte), das Umweltbundesamt
 \parencite{uba2025luft} (zuverlässig, aber manueller Download) und die OpenAQ-Plattform
 \parencite{openaq2025} (globale API mit deutschen Stationen). Die Wahl fiel auf OpenAQ, da die
 Plattform einen automatisierten API-Zugang bietet und die Aufgabenstellung diese Quelle
@@ -508,6 +504,7 @@ Der vollständige Quellcode ist im GitHub-Repository verfügbar: \url{https://gi
 \caption{Feature-Importance-Ranking für PM2.5 (Durchschnittsrang aus vier Methoden)}
 \label{tab:feature_importance_pm25}
 \small
+\begin{threeparttable}
 \begin{tabular}{@{}llccccr@{}}
 \toprule
 Rang & Feature & Korr. & RF MDI & GB MDI & Perm. & {\O} Rang \\
@@ -549,6 +546,7 @@ Rang & Feature & Korr. & RF MDI & GB MDI & Perm. & {\O} Rang \\
 GB MDI = Gradient Boosting MDI, Perm. = Permutation Importance.
 Die oberen 17~Features (über dem Strich) bilden das reduzierte Feature-Set.
 \end{tablenotes}
+\end{threeparttable}
 \end{table}
 
 \begin{table}[H]
