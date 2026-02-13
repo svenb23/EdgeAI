@@ -426,7 +426,21 @@ nur 0,3~KB und benötigen unter 0,02~ms pro Vorhersage, womit sie für den Einsa
 ressourcenbeschränkten Geräten geeignet sind.
 
 \subsection{Kritische Reflexion}
-% TODO
+Das Projekt weist mehrere Einschränkungen auf, die bei der Interpretation der Ergebnisse
+berücksichtigt werden sollten. Die Trainingsdaten stammen von einer einzigen Messstation
+und decken lediglich ein Kalenderjahr ab. Ob die Modelle auf andere Standorte oder Jahre
+übertragbar sind, wurde nicht untersucht.
+
+Die Feature-Reduktion verwendet für beide Schadstoffe dasselbe reduzierte Set von
+17~Merkmalen. Während dies den Edge-Einsatz vereinfacht, führt es bei NO2 zu einer
+messbaren Verschlechterung, da tageszeitliche Features hier relevanter sind als bei PM2.5.
+Ein schadstoffspezifisches Feature-Set könnte die NO2-Vorhersage verbessern, würde jedoch
+die Feature-Berechnung auf dem Edge-Gerät komplexer machen.
+
+Die Schwellenwerte des Ampelsystems wurden an den WHO-Richtwerten orientiert, jedoch
+nicht empirisch auf die lokalen Gegebenheiten an der Habichtstraße kalibriert. In der
+Praxis müssten die Schwellenwerte in Abstimmung mit den zuständigen Behörden festgelegt
+und validiert werden.
 
 \subsection{Verbesserungspotenziale}
 % TODO
