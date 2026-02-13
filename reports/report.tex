@@ -350,10 +350,23 @@ rechtfertigen den Vorteil eines einheitlichen, schlankeren Feature-Sets für den
 
 \subsection{Edge-Optimierung}
 \subsubsection{ONNX-Export}
-% TODO: skl2onnx, torch.onnx.export, Modellgroessen
+Für den Edge-Einsatz werden die besten Modelle in das \ac{ONNX}-Format exportiert. Da die
+lineare Regression bei PM2.5 das beste Ergebnis liefert und gleichzeitig die geringste
+Komplexität aufweist, wird sie für beide Zielvariablen als Edge-Modell gewählt. Der Export
+erfolgt mit der Bibliothek \texttt{skl2onnx}, die scikit-learn-Modelle direkt in
+\ac{ONNX}-Graphen überführt. Die Eingabe wird als Float-Tensor mit 17~Features definiert.
+Nach dem Export wird jedes Modell mit \texttt{onnxruntime} verifiziert, indem die Vorhersagen
+auf dem Testsatz mit den Ergebnissen des Originalmodells verglichen werden. Beide Modelle
+erreichen identische MAE-Werte (PM2.5: 0,914; NO2: 4,199) und bestätigen damit die
+korrekte Konvertierung.
 
 \subsubsection{Benchmark}
-% TODO: Inferenzzeit (Single/Batch), Modellgroesse
+Die exportierten \ac{ONNX}-Modelle werden hinsichtlich Modellgröße und Inferenzzeit evaluiert.
+Beide Modelle belegen jeweils nur 0,3~KB Speicherplatz, was selbst für stark
+speicherbeschränkte Mikrocontroller geeignet ist. Die Inferenzzeit wird über 100~Durchläufe
+gemittelt. Eine einzelne Vorhersage benötigt unter 0,02~ms, eine Batch-Inferenz über den
+gesamten Testsatz (ca. 1\,570 Datenpunkte) unter 0,1~ms. Diese Werte liegen weit unter den
+Anforderungen einer stündlichen Vorhersage und belegen die Echtzeitfähigkeit des Systems.
 
 \subsection{Alert-System}
 % TODO: WHO-Grenzwerte, Eskalationsstufen (Gruen/Gelb/Rot), kombinierte PM2.5 + NO2 Bewertung
